@@ -183,5 +183,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView11"
         app:srcCompat="@android:drawable/btn_star" />
+    <!-- Back button -->
+    <Button
+        android:id="@+id/backButton2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#2196F3"
+        android:text="Back"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/receita_x_despesa9" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
