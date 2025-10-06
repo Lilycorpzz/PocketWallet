@@ -221,6 +221,7 @@
                 android:orientation="horizontal">
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/color_yellow"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_margin="8dp"
@@ -229,6 +230,7 @@
                     app:cardElevation="0dp" />
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/color_gray"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_margin="8dp"
@@ -237,6 +239,7 @@
                     app:cardElevation="0dp" />
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/color_green"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_margin="8dp"
@@ -245,6 +248,7 @@
                     app:cardElevation="0dp" />
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/color_wine"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_margin="8dp"
@@ -253,6 +257,7 @@
                     app:cardElevation="0dp" />
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/color_purple"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_margin="8dp"
@@ -261,6 +266,7 @@
                     app:cardElevation="0dp" />
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/color_cyan"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_margin="8dp"
