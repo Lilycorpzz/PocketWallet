@@ -56,12 +56,14 @@
             app:layout_row="0">
 
             <ImageView
+                android:id="@+id/img_food"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginEnd="10dp"
                 android:src="@drawable/color_food" />
 
             <TextView
+                android:id="@+id/txt_food"
                 android:layout_width="143dp"
                 android:layout_height="wrap_content"
                 android:text="Food: R 420.00"
@@ -79,12 +81,14 @@
             app:layout_row="0">
 
             <ImageView
+                android:id="@+id/img_transport"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginEnd="10dp"
                 android:src="@drawable/color_transport" />
 
             <TextView
+                android:id="@+id/txt_transport"
                 android:layout_width="147dp"
                 android:layout_height="wrap_content"
                 android:text="Transport: R 390.00"
@@ -101,12 +105,14 @@
             app:layout_row="1">
 
             <ImageView
+                android:id="@+id/img_housing"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginEnd="10dp"
                 android:src="@drawable/color_residence" />
 
             <TextView
+                android:id="@+id/txt_housing"
                 android:layout_width="143dp"
                 android:layout_height="wrap_content"
                 android:text="Housing: R 270.00"
@@ -123,12 +129,14 @@
             app:layout_row="1">
 
             <ImageView
+                android:id="@+id/img_leisure"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginEnd="10dp"
                 android:src="@drawable/color_leisure" />
 
             <TextView
+                android:id="@+id/txt_leisure"
                 android:layout_width="148dp"
                 android:layout_height="wrap_content"
                 android:text="Leisure: R 130.00"
@@ -221,6 +229,7 @@
                 android:orientation="horizontal">
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/color_yellow"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_margin="8dp"
@@ -229,6 +238,7 @@
                     app:cardElevation="0dp" />
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/color_gray"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_margin="8dp"
@@ -237,6 +247,7 @@
                     app:cardElevation="0dp" />
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/color_green"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_margin="8dp"
@@ -245,6 +256,7 @@
                     app:cardElevation="0dp" />
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/color_wine"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_margin="8dp"
@@ -253,6 +265,7 @@
                     app:cardElevation="0dp" />
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/color_purple"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_margin="8dp"
@@ -261,6 +274,7 @@
                     app:cardElevation="0dp" />
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/color_cyan"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_margin="8dp"
