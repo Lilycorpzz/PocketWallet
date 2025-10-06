@@ -26,8 +26,10 @@ class HomeActivity : AppCompatActivity() {
 
         // Button click listeners
         historyButton.setOnClickListener {
-            Toast.makeText(this, "History clicked", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Acheivements clicked", Toast.LENGTH_SHORT).show()
             // TODO: Navigate to HistoryActivity if you have one
+            val intent = Intent(this, AchievementsActivity::class.java)
+            startActivity(intent)
         }
 
         categoriesButton.setOnClickListener {

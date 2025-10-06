@@ -24,6 +24,8 @@
         <activity android:name=".RegisterExpenseActivity" />
         <activity android:name=".BudgetActivity"/>
         <activity android:name=".CategoriesActivity" />
+        <activity android:name=".AchievementsActivity" />
+
     </application>
 
 </manifest>
