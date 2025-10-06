@@ -11,6 +11,7 @@ data class Expense(
     val description: String,
     val category: String,
     val value: Double,
+    val type: String, // "Income" or "Expense"
     val photoUri: Uri? = null
 )
 
@@ -23,12 +24,12 @@ class RegisterExpenseActivity : AppCompatActivity() {
     private lateinit var addPhotoBtn: Button
     private lateinit var addExpenseBtn: ImageButton
     private lateinit var totalValueField: EditText
+    private lateinit var typeSpinner: Spinner
 
     private var selectedImageUri: Uri? = null
-    private var totalExpenses: Double = 0.0
+    private var totalBalance: Double = 0.0
 
-    // Temporary storage of expenses
-    private val expensesList = mutableListOf<Expense>()
+    private val entriesList = mutableListOf<Expense>()
 
     private val pickImageLauncher = registerForActivityResult(
         ActivityResultContracts.GetContent()
@@ -43,9 +44,14 @@ class RegisterExpenseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.register)
+// Spinner setup
+        val typeSpinner = findViewById<Spinner>(R.id.type_spinner)
 
-        // ✅ Initialize all fields properly
-        totalValueField = findViewById(R.id.spinner_income_outcome)
+        val typeOptions = resources.getStringArray(R.array.income_expense_array)
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, typeOptions)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        typeSpinner.adapter = adapter
+        totalValueField = findViewById(R.id.total_value_field)
         nameInput = findViewById(R.id.input_name)
         descInput = findViewById(R.id.input_description)
         categoryInput = findViewById(R.id.input_category)
@@ -54,60 +60,45 @@ class RegisterExpenseActivity : AppCompatActivity() {
         addExpenseBtn = findViewById(R.id.button_add_expense)
 
         addPhotoBtn.setOnClickListener { pickImageLauncher.launch("image/*") }
-        addExpenseBtn.setOnClickListener { saveExpense() }
+        addExpenseBtn.setOnClickListener { saveEntry() }
 
         findViewById<ImageButton?>(R.id.return_button)?.setOnClickListener { finish() }
     }
 
-    private fun saveExpense() {
+    private fun saveEntry() {
+        val type = typeSpinner.selectedItem.toString()
         val name = nameInput.text.toString().trim()
         val description = descInput.text.toString().trim()
         val category = categoryInput.text.toString().trim()
-        val value = valueInput.text.toString().trim()
+        val valueText = valueInput.text.toString().trim()
 
-        // ✅ Data validation
-        when {
-            name.isEmpty() -> {
-                Toast.makeText(this, "Please enter the expense name.", Toast.LENGTH_SHORT).show()
-                return
-            }
-
-            category.isEmpty() -> {
-                Toast.makeText(this, "Please enter the category.", Toast.LENGTH_SHORT).show()
-                return
-            }
-
-            value.isEmpty() -> {
-                Toast.makeText(this, "Please enter the value.", Toast.LENGTH_SHORT).show()
-                return
-            }
-        }
-
-        // ✅ Parse numeric value
-        val valuetemp = try {
-            value.toDouble()
-        } catch (e: NumberFormatException) {
-            Toast.makeText(this, "Please enter a valid number for value.", Toast.LENGTH_SHORT).show()
+        if (name.isEmpty() || category.isEmpty() || valueText.isEmpty()) {
+            Toast.makeText(this, "Please complete all fields.", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // ✅ Create and store expense
-        val expense = Expense(name, description, category, valuetemp, selectedImageUri)
-        expensesList.add(expense)
+        val value = try {
+            valueText.toDouble()
+        } catch (e: NumberFormatException) {
+            Toast.makeText(this, "Enter a valid number for value.", Toast.LENGTH_SHORT).show()
+            return
+        }
 
-        // ✅ Update running total and display
-        totalExpenses += valuetemp
-        totalValueField.setText("R %.2f".format(totalExpenses))
+        val entry = Expense(name, description, category, value, type, selectedImageUri)
+        entriesList.add(entry)
 
-        // ✅ Notify user
-        val photoStatus = if (selectedImageUri != null) "with photo" else "without photo"
+        // Update total based on type
+        totalBalance += if (type == "Income") value else -value
+        totalValueField.setText("R %.2f".format(totalBalance))
+
+        val sign = if (type == "Income") "+" else "-"
         Toast.makeText(
             this,
-            "Expense noted:\n$name — R$valuetemp\nCategory: $category\nPhoto: $photoStatus",
+            "$type recorded:\n$name — $sign R$value\nCategory: $category",
             Toast.LENGTH_LONG
         ).show()
 
-        // ✅ Reset input fields
+        // Reset fields
         nameInput.text.clear()
         descInput.text.clear()
         categoryInput.text.clear()

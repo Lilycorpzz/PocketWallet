@@ -60,4 +60,9 @@
     <string name="time_rogerinho">01:21</string>
     <string name="time_cajuzada">06:59</string>
     <string name="time_salario">08:59</string>
+    <string-array name="income_expense_array">
+        <item>Income</item>
+        <item>Expense</item>
+    </string-array>
+
 </resources>

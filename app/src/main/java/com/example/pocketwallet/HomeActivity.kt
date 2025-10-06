@@ -37,7 +37,6 @@ class HomeActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
         addExpenseButton.setOnClickListener {
             Toast.makeText(this, "Add Expense clicked", Toast.LENGTH_SHORT).show()
             // Navigate to RegisterExpenseActivity
