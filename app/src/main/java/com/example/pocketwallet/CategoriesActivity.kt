@@ -1,5 +1,6 @@
 package com.example.pocketwallet
-
+import com.example.pocketwallet.data.Category
+import com.example.pocketwallet.data.AppDatabase
 import android.content.Intent
 import android.graphics.PorterDuff
 import android.os.Bundle
@@ -8,12 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 
 
-data class Category(
-    val name: String,
-    val description: String,
-    val budget: Double,
-    val color: Int
-)
+
 
 class CategoriesActivity : AppCompatActivity() {
 
