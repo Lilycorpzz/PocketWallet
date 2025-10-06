@@ -1,7 +1,7 @@
 package com.example.pocketwallet
 
 import android.content.Intent
-import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -26,20 +26,26 @@ class CategoriesActivity : AppCompatActivity() {
     private lateinit var colorCards: List<CardView>
     private var selectedColor: Int? = null
 
-    private val categoryList = mutableListOf<Category>() // temporary storage
+    // Store added categories temporarily
+    private val categoryList = mutableListOf<Category>()
+
+    // Slot references (4 available)
+    private lateinit var slotImages: List<ImageView>
+    private lateinit var slotTexts: List<TextView>
+    private var currentSlotIndex = 0 // track which slot to update next
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.categories)
 
-        // Initialize views
+        // Initialize input fields
         btnReturn = findViewById(R.id.btn_return)
         addButton = findViewById(R.id.imageButton)
         inputName = findViewById(R.id.input_name)
         inputDescription = findViewById(R.id.input_description)
         inputQuote = findViewById(R.id.input_quote)
 
-        // Color card setup
+        // Color picker cards
         colorCards = listOf(
             findViewById(R.id.color_yellow),
             findViewById(R.id.color_gray),
@@ -51,24 +57,39 @@ class CategoriesActivity : AppCompatActivity() {
 
         setupColorSelection()
 
-        // Return to home
+        // Link category display slots (these are your 4 TextViews + ImageViews)
+        slotImages = listOf(
+            findViewById(R.id.img_food),
+            findViewById(R.id.img_transport),
+            findViewById(R.id.img_housing),
+            findViewById(R.id.img_leisure)
+        )
+
+        slotTexts = listOf(
+            findViewById(R.id.txt_food),
+            findViewById(R.id.txt_transport),
+            findViewById(R.id.txt_housing),
+            findViewById(R.id.txt_leisure)
+        )
+
+        // Return button logic
         btnReturn.setOnClickListener {
             startActivity(Intent(this, HomeActivity::class.java))
             finish()
         }
 
-        // Add new category
+        // Add category button
         addButton.setOnClickListener { saveCategory() }
     }
 
     private fun setupColorSelection() {
         colorCards.forEach { card ->
             card.setOnClickListener {
-                // Remove border from all
+                // Remove elevation highlight from all
                 colorCards.forEach { it.cardElevation = 0f }
                 // Highlight selected
                 card.cardElevation = 15f
-                selectedColor = (card.cardBackgroundColor?.defaultColor ?: Color.GRAY)
+                selectedColor = card.cardBackgroundColor?.defaultColor
             }
         }
     }
@@ -78,41 +99,56 @@ class CategoriesActivity : AppCompatActivity() {
         val description = inputDescription.text.toString().trim()
         val quoteText = inputQuote.text.toString().trim()
 
-        // Data validation
+        // Input validation
         if (name.isEmpty()) {
             showToast("Please enter the category name.")
             return
         }
         if (description.isEmpty()) {
-            showToast("Please enter the category description.")
+            showToast("Please enter the description.")
             return
         }
         if (quoteText.isEmpty()) {
-            showToast("Please enter the budget amount.")
+            showToast("Please enter the budget.")
             return
         }
-        val quote = quoteText.toDoubleOrNull()
-        if (quote == null || quote <= 0) {
-            showToast("Please enter a valid number for the budget.")
+        val budget = quoteText.toDoubleOrNull()
+        if (budget == null || budget <= 0) {
+            showToast("Please enter a valid budget amount.")
             return
         }
         if (selectedColor == null) {
-            showToast("Please select a color for this category.")
+            showToast("Please select a color.")
             return
         }
 
-        // Create and store category
-        val newCategory = Category(name, description, quote, selectedColor!!)
-        categoryList.add(newCategory)
+        // Create category
+        val category = Category(name, description, budget, selectedColor!!)
+        categoryList.add(category)
 
-        showToast("Category '$name' added successfully!")
+        // Update the display slot
+        updateSlotDisplay(category)
 
-        // Reset input fields
+        // Feedback and reset
+        showToast("Category '$name' added!")
         inputName.text.clear()
         inputDescription.text.clear()
         inputQuote.text.clear()
         colorCards.forEach { it.cardElevation = 0f }
         selectedColor = null
+    }
+
+    private fun updateSlotDisplay(category: Category) {
+        // Get current slot (0–3)
+        val image = slotImages[currentSlotIndex]
+        val text = slotTexts[currentSlotIndex]
+
+        // Update UI
+        image.setColorFilter(category.color, PorterDuff.Mode.SRC_ATOP)
+        text.text = "${category.name}: R ${String.format("%.2f", category.budget)}"
+
+        // Move to next slot (looping)
+        currentSlotIndex = (currentSlotIndex + 1) % 4
     }
 
     private fun showToast(msg: String) {
