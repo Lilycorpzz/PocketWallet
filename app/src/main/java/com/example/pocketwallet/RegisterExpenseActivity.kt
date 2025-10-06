@@ -6,6 +6,15 @@ import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 
+
+data class Expense(
+    val name: String,
+    val description: String,
+    val category: String,
+    val value: Double,
+    val photoUri: Uri? = null
+)
+
 class RegisterExpenseActivity : AppCompatActivity() {
 
     private lateinit var nameInput: EditText
@@ -15,6 +24,9 @@ class RegisterExpenseActivity : AppCompatActivity() {
     private lateinit var addPhotoBtn: Button
     private lateinit var addExpenseBtn: ImageButton
     private var selectedImageUri: Uri? = null
+
+    // Temporary storage of expenses
+    private val expensesList = mutableListOf<Expense>()
 
     private val pickImageLauncher = registerForActivityResult(
         ActivityResultContracts.GetContent()
@@ -45,18 +57,52 @@ class RegisterExpenseActivity : AppCompatActivity() {
 
     private fun saveExpense() {
         val name = nameInput.text.toString().trim()
-        val desc = descInput.text.toString().trim()
+        val description = descInput.text.toString().trim()
         val category = categoryInput.text.toString().trim()
         val value = valueInput.text.toString().trim()
 
-        if (name.isEmpty() || value.isEmpty()) {
-            Toast.makeText(this, "Please fill in both name and value.", Toast.LENGTH_SHORT).show()
+        // Data validation
+        when {
+            name.isEmpty() -> {
+                Toast.makeText(this, "Please enter the expense name.", Toast.LENGTH_SHORT).show()
+                return
+            }
+
+            category.isEmpty() -> {
+                Toast.makeText(this, "Please enter the category.", Toast.LENGTH_SHORT).show()
+                return
+            }
+
+            value.isEmpty() -> {
+                Toast.makeText(this, "Please enter the value.", Toast.LENGTH_SHORT).show()
+                return
+            }
+        }
+
+        // Parse value
+        val valuetemp = try {
+            value.toDouble()
+        } catch (e: NumberFormatException) {
+            Toast.makeText(this, "Please enter a valid number for value.", Toast.LENGTH_SHORT)
+                .show()
             return
         }
 
-        val photoStatus = if (selectedImageUri != null) "with photo" else "no photo"
-        Toast.makeText(this, "Expense Added: $name (R$value) — $photoStatus", Toast.LENGTH_LONG).show()
+        // Create expense object
+        val expense = Expense(name, description, category, valuetemp, selectedImageUri)
 
+        // Add to in-memory list
+        expensesList.add(expense)
+
+        // Notify user
+        val photoStatus = if (selectedImageUri != null) "with photo" else "without photo"
+        Toast.makeText(
+            this,
+            "Expense noted:\nName: $name\nCategory: $category\nValue: R$valuetemp\nPhoto: $photoStatus",
+            Toast.LENGTH_LONG
+        ).show()
+
+        // Clear input fields for next entry
         nameInput.text.clear()
         descInput.text.clear()
         categoryInput.text.clear()
