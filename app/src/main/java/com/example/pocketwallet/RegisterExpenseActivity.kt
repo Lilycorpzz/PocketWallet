@@ -6,7 +6,6 @@ import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 
-
 data class Expense(
     val name: String,
     val description: String,
@@ -23,7 +22,10 @@ class RegisterExpenseActivity : AppCompatActivity() {
     private lateinit var valueInput: EditText
     private lateinit var addPhotoBtn: Button
     private lateinit var addExpenseBtn: ImageButton
+    private lateinit var totalValueField: EditText
+
     private var selectedImageUri: Uri? = null
+    private var totalExpenses: Double = 0.0
 
     // Temporary storage of expenses
     private val expensesList = mutableListOf<Expense>()
@@ -42,6 +44,8 @@ class RegisterExpenseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.register)
 
+        // ✅ Initialize all fields properly
+        totalValueField = findViewById(R.id.spinner_income_outcome)
         nameInput = findViewById(R.id.input_name)
         descInput = findViewById(R.id.input_description)
         categoryInput = findViewById(R.id.input_category)
@@ -61,7 +65,7 @@ class RegisterExpenseActivity : AppCompatActivity() {
         val category = categoryInput.text.toString().trim()
         val value = valueInput.text.toString().trim()
 
-        // Data validation
+        // ✅ Data validation
         when {
             name.isEmpty() -> {
                 Toast.makeText(this, "Please enter the expense name.", Toast.LENGTH_SHORT).show()
@@ -79,30 +83,31 @@ class RegisterExpenseActivity : AppCompatActivity() {
             }
         }
 
-        // Parse value
+        // ✅ Parse numeric value
         val valuetemp = try {
             value.toDouble()
         } catch (e: NumberFormatException) {
-            Toast.makeText(this, "Please enter a valid number for value.", Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(this, "Please enter a valid number for value.", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // Create expense object
+        // ✅ Create and store expense
         val expense = Expense(name, description, category, valuetemp, selectedImageUri)
-
-        // Add to in-memory list
         expensesList.add(expense)
 
-        // Notify user
+        // ✅ Update running total and display
+        totalExpenses += valuetemp
+        totalValueField.setText("R %.2f".format(totalExpenses))
+
+        // ✅ Notify user
         val photoStatus = if (selectedImageUri != null) "with photo" else "without photo"
         Toast.makeText(
             this,
-            "Expense noted:\nName: $name\nCategory: $category\nValue: R$valuetemp\nPhoto: $photoStatus",
+            "Expense noted:\n$name — R$valuetemp\nCategory: $category\nPhoto: $photoStatus",
             Toast.LENGTH_LONG
         ).show()
 
-        // Clear input fields for next entry
+        // ✅ Reset input fields
         nameInput.text.clear()
         descInput.text.clear()
         categoryInput.text.clear()
