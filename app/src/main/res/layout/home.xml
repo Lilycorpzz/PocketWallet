@@ -276,6 +276,7 @@
                 android:layout_marginStart="8dp">
 
                 <TextView
+                    android:id="@+id/text1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Food: -R 420.00"
@@ -283,6 +284,7 @@
                     android:textSize="14sp" />
 
                 <TextView
+                    android:id="@+id/text2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Transport: -R 390.00"
@@ -290,6 +292,7 @@
                     android:textSize="14sp" />
 
                 <TextView
+                    android:id="@+id/text3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Housing: -R 270.00"
@@ -297,6 +300,7 @@
                     android:textSize="14sp" />
 
                 <TextView
+                    android:id="@+id/text4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Leisure: -R 130.00"

@@ -5,15 +5,10 @@ import android.os.Bundle
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-
-data class Expense(
-    val name: String,
-    val description: String,
-    val category: String,
-    val value: Double,
-    val type: String, // "Income" or "Expense"
-    val photoUri: Uri? = null
-)
+import androidx.lifecycle.lifecycleScope
+import com.example.pocketwallet.data.AppDatabase
+import com.example.pocketwallet.data.ExpenseEntity
+import kotlinx.coroutines.launch
 
 class RegisterExpenseActivity : AppCompatActivity() {
 
@@ -29,7 +24,8 @@ class RegisterExpenseActivity : AppCompatActivity() {
     private var selectedImageUri: Uri? = null
     private var totalBalance: Double = 0.0
 
-    private val entriesList = mutableListOf<Expense>()
+    // Database
+    private val db by lazy { AppDatabase.getDatabase(this) }
 
     private val pickImageLauncher = registerForActivityResult(
         ActivityResultContracts.GetContent()
@@ -44,13 +40,16 @@ class RegisterExpenseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.register)
-// Spinner setup
-        val typeSpinner = findViewById<Spinner>(R.id.type_spinner)
 
-        val typeOptions = resources.getStringArray(R.array.income_expense_array)
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, typeOptions)
+        typeSpinner = findViewById(R.id.type_spinner)
+        val adapter = ArrayAdapter.createFromResource(
+            this,
+            R.array.income_expense_array,
+            android.R.layout.simple_spinner_item
+        )
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         typeSpinner.adapter = adapter
+
         totalValueField = findViewById(R.id.total_value_field)
         nameInput = findViewById(R.id.input_name)
         descInput = findViewById(R.id.input_description)
@@ -61,7 +60,6 @@ class RegisterExpenseActivity : AppCompatActivity() {
 
         addPhotoBtn.setOnClickListener { pickImageLauncher.launch("image/*") }
         addExpenseBtn.setOnClickListener { saveEntry() }
-
         findViewById<ImageButton?>(R.id.return_button)?.setOnClickListener { finish() }
     }
 
@@ -80,25 +78,33 @@ class RegisterExpenseActivity : AppCompatActivity() {
         val value = try {
             valueText.toDouble()
         } catch (e: NumberFormatException) {
-            Toast.makeText(this, "Enter a valid number for value.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Enter a valid number.", Toast.LENGTH_SHORT).show()
             return
         }
 
-        val entry = Expense(name, description, category, value, type, selectedImageUri)
-        entriesList.add(entry)
+        val expense = ExpenseEntity(
+            name = name,
+            description = description,
+            category = category,
+            value = value,
+            type = type,
+            photoUri = selectedImageUri?.toString()
+        )
 
-        // Update total based on type
+        // Save to database
+        lifecycleScope.launch {
+            db.expenseDao().insert(expense)
+        }
+
         totalBalance += if (type == "Income") value else -value
         totalValueField.setText("R %.2f".format(totalBalance))
 
-        val sign = if (type == "Income") "+" else "-"
         Toast.makeText(
             this,
-            "$type recorded:\n$name — $sign R$value\nCategory: $category",
+            "$type recorded: $name — R$value in $category",
             Toast.LENGTH_LONG
         ).show()
 
-        // Reset fields
         nameInput.text.clear()
         descInput.text.clear()
         categoryInput.text.clear()

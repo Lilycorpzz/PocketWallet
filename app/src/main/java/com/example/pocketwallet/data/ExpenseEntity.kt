@@ -10,5 +10,6 @@ data class ExpenseEntity(
     val description: String,
     val category: String,
     val value: Double,
+    val type: String, // 👈 this must exist since you use it.type
     val photoUri: String? = null
 )
