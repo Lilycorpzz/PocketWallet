@@ -22,6 +22,8 @@
         </activity>
         <activity android:name=".HomeActivity" />
         <activity android:name=".RegisterExpenseActivity" />
+        <activity android:name=".BudgetActivity"/>
+        <activity android:name=".CategoriesActivity" />
     </application>
 
 </manifest>

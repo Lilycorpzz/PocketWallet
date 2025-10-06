@@ -13,6 +13,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var addExpenseButton: ImageButton
     private lateinit var dashboardButton: ImageButton
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home)
@@ -30,9 +31,10 @@ class HomeActivity : AppCompatActivity() {
         }
 
         categoriesButton.setOnClickListener {
-            Toast.makeText(this, "Categories clicked", Toast.LENGTH_SHORT).show()
-            // TODO: Navigate to CategoriesActivity
+            val intent = Intent(this, CategoriesActivity::class.java)
+            startActivity(intent)
         }
+
 
         addExpenseButton.setOnClickListener {
             Toast.makeText(this, "Add Expense clicked", Toast.LENGTH_SHORT).show()
@@ -42,8 +44,11 @@ class HomeActivity : AppCompatActivity() {
         }
 
         dashboardButton.setOnClickListener {
-            Toast.makeText(this, "Dashboard clicked", Toast.LENGTH_SHORT).show()
-            // TODO: Navigate to DashboardActivity
+            val intent = Intent(this, BudgetActivity::class.java)
+            startActivity(intent)
         }
+
+
+
     }
 }

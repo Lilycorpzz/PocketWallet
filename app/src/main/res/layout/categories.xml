@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,6 +8,7 @@
     android:background="@color/main_blue"
     android:paddingTop="26dp">
 
+    <!-- Return Button -->
     <ImageButton
         android:id="@+id/btn_return"
         android:layout_width="wrap_content"
@@ -17,12 +19,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Title -->
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="@string/categories"
+        android:text="Expense Categories"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="25sp"
@@ -30,8 +32,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Category Grid -->
     <androidx.gridlayout.widget.GridLayout
-        android:id="@+id/categorias"
+        android:id="@+id/category_grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
@@ -43,118 +46,101 @@
         app:layout_constraintTop_toBottomOf="@+id/title"
         app:rowCount="2">
 
-
+        <!-- Food -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:orientation="horizontal"
             android:paddingBottom="20dp"
             app:layout_column="0"
             app:layout_row="0">
 
-
             <ImageView
-                android:id="@+id/color_alimentacao"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginEnd="10dp"
-                android:layout_weight="1"
                 android:src="@drawable/color_food" />
 
             <TextView
-                android:id="@+id/alimentacao_label"
                 android:layout_width="143dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/food"
+                android:text="Food: R 420.00"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
         </LinearLayout>
 
+        <!-- Transport -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:orientation="horizontal"
             android:paddingBottom="20dp"
             app:layout_column="1"
             app:layout_row="0">
 
             <ImageView
-                android:id="@+id/imageView8"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginEnd="10dp"
-                android:layout_weight="1"
                 android:src="@drawable/color_transport" />
 
             <TextView
-                android:id="@+id/transporte"
                 android:layout_width="147dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/transport"
+                android:text="Transport: R 390.00"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
         </LinearLayout>
 
+        <!-- Housing -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:orientation="horizontal"
             app:layout_column="0"
             app:layout_row="1">
 
             <ImageView
-                android:id="@+id/imageView9"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginEnd="10dp"
-                android:layout_weight="1"
                 android:src="@drawable/color_residence" />
 
             <TextView
-                android:id="@+id/textView8"
                 android:layout_width="143dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/residence"
+                android:text="Housing: R 270.00"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
         </LinearLayout>
 
+        <!-- Leisure -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:orientation="horizontal"
             app:layout_column="1"
             app:layout_row="1">
 
             <ImageView
-                android:id="@+id/imageView10"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginEnd="10dp"
-                android:layout_weight="1"
                 android:src="@drawable/color_leisure" />
 
             <TextView
-                android:id="@+id/textView9"
                 android:layout_width="148dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/leisure"
+                android:text="Leisure: R 130.00"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
         </LinearLayout>
 
     </androidx.gridlayout.widget.GridLayout>
 
+    <!-- New Category Form -->
     <LinearLayout
-        android:id="@+id/categorias_formulario"
+        android:id="@+id/category_form"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="32dp"
@@ -164,14 +150,13 @@
         android:paddingTop="28dp"
         android:paddingRight="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/categorias">
+        app:layout_constraintTop_toBottomOf="@+id/category_grid">
 
         <TextView
-            android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="35dp"
-            android:text="@string/new_category"
+            android:text="Add New Category"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="20sp"
@@ -186,8 +171,8 @@
             android:drawableStart="@drawable/icon_name"
             android:drawablePadding="14dp"
             android:ems="10"
-            android:inputType="text"
-            android:text="@string/name" />
+            android:hint="Name"
+            android:inputType="text" />
 
         <EditText
             android:id="@+id/input_description"
@@ -198,8 +183,8 @@
             android:drawableStart="@drawable/icon_description"
             android:drawablePadding="14dp"
             android:ems="10"
-            android:inputType="text"
-            android:text="@string/description" />
+            android:hint="Description"
+            android:inputType="text" />
 
         <EditText
             android:id="@+id/input_quote"
@@ -210,8 +195,8 @@
             android:drawableStart="@drawable/icon_quote"
             android:drawablePadding="14dp"
             android:ems="10"
-            android:inputType="text"
-            android:text="@string/quote" />
+            android:hint="Budget (Rands)"
+            android:inputType="numberDecimal" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -220,12 +205,11 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/input_cor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/icon_color"
                 android:drawablePadding="14dp"
-                android:text="@string/color"
+                android:text="Choose Colour"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -243,7 +227,6 @@
                     app:cardBackgroundColor="@color/yellow"
                     app:cardCornerRadius="40dp"
                     app:cardElevation="0dp" />
-
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="30dp"
@@ -285,10 +268,10 @@
                     app:cardCornerRadius="40dp"
                     app:cardElevation="0dp" />
 
-
             </LinearLayout>
         </LinearLayout>
 
+        <!-- Add Button -->
         <ImageButton
             android:id="@+id/imageButton"
             android:layout_width="90dp"
@@ -296,11 +279,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="27dp"
             android:background="@android:color/transparent"
-            android:src="@drawable/icon_add"
-            app:layout_constraintTop_toBottomOf="@+id/categorias_formulario" />
+            android:src="@drawable/icon_add" />
     </LinearLayout>
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
