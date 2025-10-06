@@ -3,10 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@color/main_blue"
-    android:paddingTop="26dp">
+    android:paddingTop="26dp"
+    tools:context=".RegisterExpenseActivity">
 
+    <!-- Back Button -->
     <ImageButton
         android:id="@+id/return_button"
         android:layout_width="wrap_content"
@@ -17,12 +19,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Page Title -->
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="@string/register"
+        android:text="Register Expense"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="25sp"
@@ -30,6 +32,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Total Value Input -->
     <LinearLayout
         android:id="@+id/value_input_layout"
         android:layout_width="match_parent"
@@ -44,7 +47,7 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/value"
+            android:text="Total Value (Rands)"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -55,87 +58,102 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:background="@drawable/component_input"
-            android:inputType="text"
-            android:text="@string/zero_number"
+            android:hint="R 0.00"
+            android:inputType="numberDecimal"
             android:textColor="@color/white"
             android:textSize="35sp" />
     </LinearLayout>
 
+    <!-- Expense Form -->
     <LinearLayout
-        android:id="@+id/categorias_formulario"
-        android:layout_width="412dp"
+        android:id="@+id/expense_form_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
         android:background="@drawable/card_rounded_shape"
         android:orientation="vertical"
         android:paddingLeft="50dp"
-        android:paddingTop="70dp"
+        android:paddingTop="50dp"
         android:paddingRight="50dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/value_input_layout">
+        app:layout_constraintTop_toBottomOf="@+id/value_input_layout"
+        app:layout_constraintBottom_toBottomOf="parent">
 
+        <!-- Expense Name -->
         <EditText
             android:id="@+id/input_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="27dp"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/component_input"
             android:drawableStart="@drawable/icon_name"
             android:drawablePadding="14dp"
-            android:ems="10"
+            android:hint="Expense Name"
             android:inputType="text"
-            android:text="@string/name" />
+            android:textColor="@color/white" />
 
+        <!-- Description -->
         <EditText
             android:id="@+id/input_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="27dp"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/component_input"
             android:drawableStart="@drawable/icon_description"
             android:drawablePadding="14dp"
-            android:ems="10"
+            android:hint="Description"
             android:inputType="text"
-            android:text="@string/description" />
+            android:textColor="@color/white" />
 
+        <!-- Category -->
         <EditText
-            android:id="@+id/input_categoria"
+            android:id="@+id/input_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="27dp"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/component_input"
             android:drawableStart="@drawable/icon_category"
-            android:drawableEnd="@drawable/icon_suspended"
             android:drawablePadding="14dp"
-            android:ems="10"
+            android:hint="Category (e.g. Food, Transport, Rent)"
             android:inputType="text"
-            android:text="@string/category" />
+            android:textColor="@color/white" />
 
+        <!-- Value -->
         <EditText
             android:id="@+id/input_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="27dp"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/component_input"
             android:drawableStart="@drawable/icon_money"
-            android:drawableEnd="@drawable/icon_suspended"
             android:drawablePadding="14dp"
-            android:ems="10"
-            android:inputType="text"
-            android:text="@string/revenue_expense" />
+            android:hint="Amount (R)"
+            android:inputType="numberDecimal"
+            android:textColor="@color/white" />
 
+        <!-- Add Photo Button -->
+        <Button
+            android:id="@+id/button_add_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:text="Add Photo (Optional)"
+            android:textColor="@color/main_blue"
+            android:backgroundTint="@color/white"
+            android:padding="10dp"
+            android:drawableStart="@drawable/icon_camera" />
 
+        <!-- Save Expense Button -->
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/button_add_expense"
             android:layout_width="90dp"
             android:layout_height="90dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="27dp"
+            android:layout_marginTop="30dp"
             android:background="@android:color/transparent"
             android:src="@drawable/icon_add"
-            app:layout_constraintTop_toBottomOf="@+id/parent" />
+            android:contentDescription="Save Expense" />
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
