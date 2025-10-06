@@ -8,32 +8,62 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
+        <!-- Logo -->
+        <ImageView
+            android:id="@+id/appLogo"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_marginTop="20dp"
+            android:contentDescription="App Logo"
+            android:src="@drawable/icon_camera" />
+
+        <!-- Title -->
         <TextView
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Set Monthly Budget Goals"
-            android:textSize="24sp"
+            android:text="Monthly Budget Goals"
+            android:textSize="22sp"
             android:textStyle="bold"
-            android:layout_marginBottom="24dp" />
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Minimum Goal -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Minimum Goal (ZAR):"
+            android:textSize="16sp"
+            android:layout_marginBottom="6dp" />
 
         <EditText
             android:id="@+id/inputMinGoal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Minimum spending goal (e.g. R 500)"
+            android:hint="Enter minimum amount (e.g. 500)"
             android:inputType="numberDecimal"
             android:layout_marginBottom="16dp" />
+
+        <!-- Maximum Goal -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Maximum Goal (ZAR):"
+            android:textSize="16sp"
+            android:layout_marginBottom="6dp" />
 
         <EditText
             android:id="@+id/inputMaxGoal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Maximum spending limit (e.g. R 2000)"
+            android:hint="Enter maximum amount (e.g. 2000)"
             android:inputType="numberDecimal"
-            android:layout_marginBottom="24dp" />
+            android:layout_marginBottom="18dp" />
 
+        <!-- Save button -->
         <Button
             android:id="@+id/buttonSaveBudget"
             android:layout_width="match_parent"
@@ -41,7 +71,26 @@
             android:text="Save Goals"
             android:backgroundTint="#4CAF50"
             android:textColor="@android:color/white"
-            android:textSize="16sp" />
+            android:layout_marginBottom="18dp" />
+
+        <!-- Summary (shows min & max in Rands) -->
+        <TextView
+            android:id="@+id/budgetSummary2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Your budget summary will appear here."
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_marginBottom="22dp" />
+
+        <!-- Back button -->
+        <Button
+            android:id="@+id/backButton2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:backgroundTint="#2196F3"
+            android:textColor="@android:color/white" />
 
     </LinearLayout>
 </ScrollView>
