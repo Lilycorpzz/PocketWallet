@@ -19,7 +19,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var addExpenseButton: ImageButton
     private lateinit var dashboardButton: ImageButton
 
-    // --- TextViews for displaying data ---
+
     private lateinit var balanceAmount: TextView
     private lateinit var incomeAmount: TextView
     private lateinit var expenseAmount: TextView
@@ -46,14 +46,14 @@ class HomeActivity : AppCompatActivity() {
 
         // Initialize text views
         balanceAmount = findViewById(R.id.text_balance_amount)
-        incomeAmount = findViewById(R.id.text_balance_label) // optional for clarity, not used here
-        expenseAmount = findViewById(R.id.text_balance_amount) // optional
-        categoryFood = findViewById(R.id.text1) // will update below
+        incomeAmount = findViewById(R.id.text_balance_label)
+        expenseAmount = findViewById(R.id.text_balance_amount)
+        categoryFood = findViewById(R.id.text1)
         categoryTransport = findViewById(R.id.text2)
         categoryHousing = findViewById(R.id.text3)
         categoryLeisure = findViewById(R.id.text4)
 
-        // 🧠 Load saved expense data
+        //Load saved expense data
         loadExpenseData()
 
         // --- Button click listeners ---
@@ -75,9 +75,7 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    // ------------------------------------------------------------
-    // 🔽 Function: Load all saved expense data from Room Database
-    // ------------------------------------------------------------
+
     private fun loadExpenseData() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
@@ -95,10 +93,10 @@ class HomeActivity : AppCompatActivity() {
                     .mapValues { entry -> entry.value.sumOf { it.value } }
 
                 withContext(Dispatchers.Main) {
-                    // 💰 Update the top card
+                    //  Update the top card
                     balanceAmount.text = "R %.2f".format(balance)
 
-                    // 🏷️ Update expense categories if they exist
+
                     categoryFood.text =
                         "Food: -R %.2f".format(totalsByCategory["Food"] ?: 0.0)
                     categoryTransport.text =

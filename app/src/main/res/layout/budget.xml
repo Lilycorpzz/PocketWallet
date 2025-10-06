@@ -73,7 +73,7 @@
             android:textColor="@android:color/white"
             android:layout_marginBottom="18dp" />
 
-        <!-- Summary (shows min & max in Rands) -->
+        <!-- Shows min & max -->
         <TextView
             android:id="@+id/budgetSummary2"
             android:layout_width="match_parent"

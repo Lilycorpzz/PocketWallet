@@ -29,10 +29,6 @@ class AchievementsActivity : AppCompatActivity() {
             findViewById<ImageView>(R.id.imageView12)
         )
 
-        // TODO (optional): later you can check achievements progress here
-        // Example idea: read SharedPreferences flags and update colors/icons
-        // val prefs = getSharedPreferences("AchievementsPrefs", MODE_PRIVATE)
-        // if (prefs.getBoolean("firstExpense", false)) firstExpense.setTextColor(getColor(R.color.green))
 
         // Back button logic
         backButton.setOnClickListener {
