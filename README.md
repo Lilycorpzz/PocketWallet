@@ -4,6 +4,10 @@
 
 [Video](https://drive.google.com/file/d/1b4r79BbptdVatn2IWHuIGSmGVbDaPPQL/view?usp=sharing)
 
+## APK
+
+Apk is in the app folder.
+
 ## App Overview
 
 PocketWallet enables users to:
