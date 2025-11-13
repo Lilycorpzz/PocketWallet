@@ -10,6 +10,11 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
     }
+
+    plugins {
+        // Required for Kotlin 2.0 when using Jetpack Compose
+        id("org.jetbrains.kotlin.plugin.compose") version "2.0.0"
+    }
 }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
