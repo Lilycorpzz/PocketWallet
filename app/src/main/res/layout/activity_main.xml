@@ -18,8 +18,9 @@
             android:layout_width="250dp"
             android:layout_height="250dp"
             android:layout_marginTop="50dp"
-            android:src="@drawable/icon_camera"
-            android:contentDescription="App Logo" />
+            android:background="#FCF5FD"
+            android:contentDescription="App Logo"
+            android:src="@drawable/icon_camera" />
 
         <!-- App Name -->
         <TextView

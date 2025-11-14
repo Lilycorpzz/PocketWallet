@@ -152,7 +152,7 @@
         android:layout_marginTop="51dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title2"
-        app:srcCompat="@drawable/icon_revenue" />
+        app:srcCompat="@drawable/icon_money" />
 
     <ImageView
         android:id="@+id/imageView5"
@@ -162,7 +162,7 @@
         android:layout_marginTop="62dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView4"
-        app:srcCompat="@android:drawable/checkbox_on_background" />
+        app:srcCompat="@drawable/icon_suspended" />
 
     <ImageView
         android:id="@+id/imageView11"
@@ -182,13 +182,13 @@
         android:layout_marginTop="63dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView11"
-        app:srcCompat="@android:drawable/btn_star" />
+        app:srcCompat="@android:drawable/checkbox_on_background" />
     <!-- Back button -->
     <Button
         android:id="@+id/backButton2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@android:color/black"
+        android:backgroundTint="#B39035"
         android:text="Back"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"

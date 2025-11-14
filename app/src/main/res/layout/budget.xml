@@ -88,8 +88,8 @@
             android:id="@+id/backButton2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="#b39035"
             android:text="Back"
-            android:backgroundTint="#2196F3"
             android:textColor="@android:color/white" />
 
     </LinearLayout>
