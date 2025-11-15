@@ -58,6 +58,9 @@ class BudgetActivity : AppCompatActivity() {
             }.addOnFailureListener {
                 Toast.makeText(this, "Error saving goals", Toast.LENGTH_SHORT).show()
             }
+            prefs.edit().putFloat("minGoal", min.toFloat()).apply()
+            prefs.edit().putFloat("maxGoal", max.toFloat()).apply()
+
         }
 
 
