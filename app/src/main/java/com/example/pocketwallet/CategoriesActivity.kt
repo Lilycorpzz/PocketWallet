@@ -5,12 +5,13 @@ import android.content.Intent
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.View
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Spinner
-import android.widget.*
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.AdapterView
@@ -20,6 +21,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.pocketwallet.data.AppDatabase
 import com.example.pocketwallet.data.CategoryEntity
 import kotlinx.coroutines.launch
+import java.util.*
 
 class CategoriesActivity : AppCompatActivity() {
 
@@ -28,25 +30,21 @@ class CategoriesActivity : AppCompatActivity() {
     private lateinit var inputName: EditText
     private lateinit var inputDescription: EditText
     private lateinit var inputQuote: EditText
-
     private lateinit var colorCards: List<CardView>
     private var selectedColor: Int? = null
-
     // Database
     private val db by lazy { AppDatabase.getDatabase(this) }
-
     // Slot references (4 available)
     private lateinit var slotImages: List<ImageView>
     private lateinit var slotTexts: List<TextView>
     private var currentSlotIndex = 0 // track which slot to update next
-
     private lateinit var inputPeriod: Spinner
-
     private lateinit var inputCustomStart: EditText
-
     private lateinit var inputCustomEnd: EditText
-
     private lateinit var inputCategory: Spinner // add this at the top
+    private lateinit var inputDate: EditText
+    private lateinit var inputStartTime: EditText
+    private lateinit var inputEndTime: EditText
 
 
 
@@ -63,6 +61,9 @@ class CategoriesActivity : AppCompatActivity() {
         inputCustomStart = findViewById(R.id.input_custom_start)
         inputCustomEnd = findViewById(R.id.input_custom_end)
         inputCategory = findViewById(R.id.input_category) // initialize
+        inputDate = findViewById(R.id.input_date)
+        inputStartTime = findViewById(R.id.input_start_time)
+        inputEndTime = findViewById(R.id.input_end_time)
 
 
         colorCards = listOf(
@@ -74,7 +75,7 @@ class CategoriesActivity : AppCompatActivity() {
             findViewById(R.id.color_cyan)
         )
 
-        setupColorSelection()
+
 
         slotImages = listOf(
             findViewById(R.id.img_food),
@@ -92,6 +93,7 @@ class CategoriesActivity : AppCompatActivity() {
         setupCategorySpinner()
         setupPeriodSpinner()
         setupColorSelection()
+        setupDateAndTimePickers()
 
         btnReturn.setOnClickListener {
             startActivity(Intent(this, HomeActivity::class.java))
@@ -151,15 +153,6 @@ class CategoriesActivity : AppCompatActivity() {
         }
     }
 
-
-
-
-
-
-
-
-
-
     private fun setupColorSelection() {
         colorCards.forEach { card ->
             card.setOnClickListener {
@@ -167,6 +160,57 @@ class CategoriesActivity : AppCompatActivity() {
                 card.cardElevation = 15f
                 selectedColor = card.cardBackgroundColor.defaultColor
             }
+        }
+    }
+
+    // --- Date & Time Pickers ---
+    @SuppressLint("SetTextI18n", "DefaultLocale")
+    private fun setupDateAndTimePickers() {
+        inputDate.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            val year = calendar.get(Calendar.YEAR)
+            val month = calendar.get(Calendar.MONTH)
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+            DatePickerDialog(this, { _, y, m, d ->
+                inputDate.setText("$d/${m + 1}/$y")
+            }, year, month, day).show()
+        }
+
+        val timePickerListener = { editText: EditText ->
+            val calendar = Calendar.getInstance()
+            val hour = calendar.get(Calendar.HOUR_OF_DAY)
+            val minute = calendar.get(Calendar.MINUTE)
+
+            TimePickerDialog(this, { _, h, m ->
+                editText.setText(String.format("%02d:%02d", h, m))
+            }, hour, minute, true).show()
+        }
+
+        inputStartTime.setOnClickListener { timePickerListener(inputStartTime) }
+        inputEndTime.setOnClickListener { timePickerListener(inputEndTime) }
+
+        // Optional: also for custom range dates
+        inputCustomStart.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            val year = calendar.get(Calendar.YEAR)
+            val month = calendar.get(Calendar.MONTH)
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+            DatePickerDialog(this, { _, y, m, d ->
+                inputCustomStart.setText("$d/${m + 1}/$y")
+            }, year, month, day).show()
+        }
+
+        inputCustomEnd.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            val year = calendar.get(Calendar.YEAR)
+            val month = calendar.get(Calendar.MONTH)
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+            DatePickerDialog(this, { _, y, m, d ->
+                inputCustomEnd.setText("$d/${m + 1}/$y")
+            }, year, month, day).show()
         }
     }
 
@@ -210,6 +254,11 @@ class CategoriesActivity : AppCompatActivity() {
         inputName.text.clear()
         inputDescription.text.clear()
         inputQuote.text.clear()
+        inputDate.text.clear()
+        inputStartTime.text.clear()
+        inputEndTime.text.clear()
+        inputCustomStart.text.clear()
+        inputCustomEnd.text.clear()
         colorCards.forEach { it.cardElevation = 0f }
         selectedColor = null
     }
