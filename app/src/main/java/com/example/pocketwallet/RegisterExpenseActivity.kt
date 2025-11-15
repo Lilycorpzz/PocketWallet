@@ -7,6 +7,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.pocketwallet.data.AppDatabase
+import com.example.pocketwallet.data.Expense
 import com.example.pocketwallet.data.ExpenseEntity
 import kotlinx.coroutines.launch
 
@@ -61,6 +62,17 @@ class RegisterExpenseActivity : AppCompatActivity() {
         addPhotoBtn.setOnClickListener { pickImageLauncher.launch("image/*") }
         addExpenseBtn.setOnClickListener { saveEntry() }
         findViewById<ImageButton?>(R.id.return_button)?.setOnClickListener { finish() }
+    }
+    private fun saveExpenseToFirebase(expense: Expense) {
+        val key = FirebaseManager.db.child("expenses").push().key!!
+
+        FirebaseManager.db.child("expenses").child(key).setValue(expense.copy(id = key))
+            .addOnSuccessListener {
+                Toast.makeText(this, "Expense saved online!", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Failed to save expense", Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun saveEntry() {
