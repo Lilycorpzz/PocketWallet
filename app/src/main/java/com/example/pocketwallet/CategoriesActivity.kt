@@ -1,9 +1,19 @@
 package com.example.pocketwallet
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.PorterDuff
 import android.os.Bundle
+import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.Spinner
 import android.widget.*
+import android.widget.TextView
+import android.widget.Toast
+import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.lifecycleScope
@@ -30,6 +40,16 @@ class CategoriesActivity : AppCompatActivity() {
     private lateinit var slotTexts: List<TextView>
     private var currentSlotIndex = 0 // track which slot to update next
 
+    private lateinit var inputPeriod: Spinner
+
+    private lateinit var inputCustomStart: EditText
+
+    private lateinit var inputCustomEnd: EditText
+
+    private lateinit var inputCategory: Spinner // add this at the top
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.categories)
@@ -39,6 +59,11 @@ class CategoriesActivity : AppCompatActivity() {
         inputName = findViewById(R.id.input_name)
         inputDescription = findViewById(R.id.input_description)
         inputQuote = findViewById(R.id.input_quote)
+        inputPeriod = findViewById(R.id.input_period)
+        inputCustomStart = findViewById(R.id.input_custom_start)
+        inputCustomEnd = findViewById(R.id.input_custom_end)
+        inputCategory = findViewById(R.id.input_category) // initialize
+
 
         colorCards = listOf(
             findViewById(R.id.color_yellow),
@@ -64,6 +89,9 @@ class CategoriesActivity : AppCompatActivity() {
             findViewById(R.id.txt_housing),
             findViewById(R.id.txt_leisure)
         )
+        setupCategorySpinner()
+        setupPeriodSpinner()
+        setupColorSelection()
 
         btnReturn.setOnClickListener {
             startActivity(Intent(this, HomeActivity::class.java))
@@ -71,7 +99,66 @@ class CategoriesActivity : AppCompatActivity() {
         }
 
         addButton.setOnClickListener { saveCategory() }
+
+
     }
+
+
+
+    private fun setupCategorySpinner() {
+        val categories = listOf(
+            "Select Category", "Food", "Transport", "Housing", "Leisure",
+            "Entertainment", "Health", "Education", "Shopping", "Other"
+        )
+
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categories)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        inputCategory.adapter = adapter
+
+        inputCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                // Optional: do something on selection
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+    }
+
+
+
+
+    private fun setupPeriodSpinner() {
+        val periods = listOf("Select Period", "Today", "Last 7 Days", "Last 30 Days", "This Month", "Custom Range")
+
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, periods)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        inputPeriod.adapter = adapter
+
+        inputPeriod.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val selected = periods[position]
+
+                if (selected == "Custom Range") {
+                    inputCustomStart.visibility = View.VISIBLE
+                    inputCustomEnd.visibility = View.VISIBLE
+                } else {
+                    inputCustomStart.visibility = View.GONE
+                    inputCustomEnd.visibility = View.GONE
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+    }
+
+
+
+
+
+
+
+
+
 
     private fun setupColorSelection() {
         colorCards.forEach { card ->
@@ -127,6 +214,7 @@ class CategoriesActivity : AppCompatActivity() {
         selectedColor = null
     }
 
+    @SuppressLint("SetTextI18n", "DefaultLocale")
     private fun updateSlotDisplay(category: CategoryEntity) {
         val image = slotImages[currentSlotIndex]
         val text = slotTexts[currentSlotIndex]
