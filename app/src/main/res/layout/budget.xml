@@ -44,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter minimum amount (e.g. 500)"
-            android:inputType="numberDecimal"
+            android:inputType="numberDecimal|numberSigned"
             android:layout_marginBottom="16dp" />
 
         <!-- Maximum Goal -->
@@ -60,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter maximum amount (e.g. 2000)"
-            android:inputType="numberDecimal"
+            android:inputType="numberDecimal|numberSigned"
             android:layout_marginBottom="18dp" />
 
         <!-- Save button -->

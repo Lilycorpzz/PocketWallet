@@ -35,8 +35,9 @@ class BudgetActivity : AppCompatActivity() {
         // Load saved values (if any)
         val savedMin = prefs.getFloat("minGoal", -1f)
         val savedMax = prefs.getFloat("maxGoal", -1f)
-        if (savedMin >= 0f) inputMinGoal.setText(savedMin.toString())
-        if (savedMax >= 0f) inputMaxGoal.setText(savedMax.toString())
+        if (savedMin >= 0f) inputMinGoal.setText("%.0f".format(savedMin))
+        if (savedMax >= 0f) inputMaxGoal.setText("%.0f".format(savedMax))
+
         if (savedMin >= 0f && savedMax >= 0f) updateSummary(savedMin.toDouble(), savedMax.toDouble())
 
         saveButton.setOnClickListener {
