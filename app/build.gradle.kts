@@ -53,6 +53,8 @@ dependencies {
 
     //Kotlin Extensions + Coroutines for Room
     implementation("androidx.room:room-ktx:2.6.1")
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
 }
 
 
