@@ -38,35 +38,28 @@ class BudgetActivity : AppCompatActivity() {
         if (savedMin >= 0f) inputMinGoal.setText(savedMin.toString())
         if (savedMax >= 0f) inputMaxGoal.setText(savedMax.toString())
         if (savedMin >= 0f && savedMax >= 0f) updateSummary(savedMin.toDouble(), savedMax.toDouble())
-        FirebaseManager.db.child("goals").setValue(
-            mapOf(
-                "minGoal" to inputMinGoal.text.toString().toDouble(),
-                "maxGoal" to inputMaxGoal.text.toString().toDouble()
-            )
-        )
+
         saveButton.setOnClickListener {
-            val min = inputMinGoal.text.toString().toDoubleOrNull()
-            val max = inputMaxGoal.text.toString().toDoubleOrNull()
+            val min = inputMinGoal.text.toString().trim()
+            val max = inputMaxGoal.text.toString().trim()
 
-            if (min == null || max == null) {
-                Toast.makeText(this, "Please enter both goals in Rands.", Toast.LENGTH_SHORT).show()
+            if (min.isEmpty() || max.isEmpty()) {
+                Toast.makeText(this, "Enter both min and max goals", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            if (min >= max) {
-                Toast.makeText(this, "Minimum must be less than maximum.", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+            FirebaseManager.db.child("goals").setValue(
+                mapOf(
+                    "minGoal" to min.toDouble(),
+                    "maxGoal" to max.toDouble()
+                )
+            ).addOnSuccessListener {
+                Toast.makeText(this, "Goals saved!", Toast.LENGTH_SHORT).show()
+            }.addOnFailureListener {
+                Toast.makeText(this, "Error saving goals", Toast.LENGTH_SHORT).show()
             }
-
-            // Save to SharedPreferences
-            prefs.edit()
-                .putFloat("minGoal", min.toFloat())
-                .putFloat("maxGoal", max.toFloat())
-                .apply()
-
-            updateSummary(min, max)
-            Toast.makeText(this, "Budget goals saved!", Toast.LENGTH_SHORT).show()
         }
+
 
         backButton.setOnClickListener {
             // simply finish the activity to go back to previous screen

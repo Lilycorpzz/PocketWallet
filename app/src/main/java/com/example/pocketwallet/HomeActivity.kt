@@ -23,6 +23,8 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var balanceAmount: TextView
     private lateinit var incomeAmount: TextView
     private lateinit var expenseAmount: TextView
+    private lateinit var MaxAmount: TextView
+    private lateinit var MinAmount: TextView
     private lateinit var categoryFood: TextView
     private lateinit var categoryTransport: TextView
     private lateinit var categoryHousing: TextView
@@ -48,10 +50,21 @@ class HomeActivity : AppCompatActivity() {
         balanceAmount = findViewById(R.id.text_balance_amount)
         incomeAmount = findViewById(R.id.text_balance_label)
         expenseAmount = findViewById(R.id.text_balance_amount)
+        MaxAmount = findViewById(R.id.max_amount)
+        MinAmount = findViewById(R.id.min_amount)
         categoryFood = findViewById(R.id.text1)
         categoryTransport = findViewById(R.id.text2)
         categoryHousing = findViewById(R.id.text3)
         categoryLeisure = findViewById(R.id.text4)
+
+        FirebaseManager.db.child("goals").get()
+            .addOnSuccessListener { snapshot ->
+                val minGoal = snapshot.child("minGoal").getValue(Double::class.java) ?: 0.0
+                val maxGoal = snapshot.child("maxGoal").getValue(Double::class.java) ?: 0.0
+
+                MaxAmount.text = "Min: R$minGoal"
+                MinAmount.text = "Max: R$maxGoal"
+            }
 
         //Load saved expense data
         loadExpenseData()
