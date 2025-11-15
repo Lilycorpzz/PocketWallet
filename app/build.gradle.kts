@@ -4,6 +4,7 @@ plugins {
     id("org.jetbrains.kotlin.kapt")
     alias(libs.plugins.google.gms.google.services)
     alias(libs.plugins.google.firebase.crashlytics)
+
 }
 
 android {
@@ -39,23 +40,27 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation("androidx.gridlayout:gridlayout:1.0.0")
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+
+    // Firebase Realtime Database
+    implementation("com.google.firebase:firebase-database-ktx:20.3.0")
+
+    // Crashlytics
     implementation(libs.firebase.crashlytics)
+
+    // Room
+    implementation("androidx.room:room-runtime:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    // Room Database
-    implementation("androidx.room:room-runtime:2.6.1")
-    kapt("androidx.room:room-compiler:2.6.1")
-
-    //Kotlin Extensions + Coroutines for Room
-    implementation("androidx.room:room-ktx:2.6.1")
 }
 
 
