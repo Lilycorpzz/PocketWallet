@@ -38,7 +38,12 @@ class BudgetActivity : AppCompatActivity() {
         if (savedMin >= 0f) inputMinGoal.setText(savedMin.toString())
         if (savedMax >= 0f) inputMaxGoal.setText(savedMax.toString())
         if (savedMin >= 0f && savedMax >= 0f) updateSummary(savedMin.toDouble(), savedMax.toDouble())
-
+        FirebaseManager.db.child("goals").setValue(
+            mapOf(
+                "minGoal" to inputMinGoal.text.toString().toDouble(),
+                "maxGoal" to inputMaxGoal.text.toString().toDouble()
+            )
+        )
         saveButton.setOnClickListener {
             val min = inputMinGoal.text.toString().toDoubleOrNull()
             val max = inputMaxGoal.text.toString().toDoubleOrNull()
