@@ -52,6 +52,7 @@ dependencies {
 
     // Crashlytics
     implementation(libs.firebase.crashlytics)
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
     // Room
     implementation("androidx.room:room-runtime:2.6.1")

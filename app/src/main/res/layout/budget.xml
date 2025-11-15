@@ -73,6 +73,19 @@
             android:textColor="@android:color/white"
             android:layout_marginBottom="18dp" />
 
+        <!-- Back button -->
+        <Button
+            android:id="@+id/backButton2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#b39035"
+            android:text="Back"
+            android:textColor="@android:color/white" />
+        <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/budgetBarChart"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginTop="20dp"/>
         <!-- Shows min & max -->
         <TextView
             android:id="@+id/budgetSummary2"
@@ -83,14 +96,7 @@
             android:gravity="center"
             android:layout_marginBottom="22dp" />
 
-        <!-- Back button -->
-        <Button
-            android:id="@+id/backButton2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#b39035"
-            android:text="Back"
-            android:textColor="@android:color/white" />
+
 
     </LinearLayout>
 </ScrollView>
