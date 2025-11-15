@@ -1,119 +1,106 @@
 package com.example.pocketwallet
-import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.ImageButton
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.pocketwallet.data.AppDatabase
+import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.components.Description
+import com.github.mikephil.charting.components.LimitLine
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class HomeActivity : AppCompatActivity() {
 
-    // --- Buttons ---
-    private lateinit var historyButton: ImageButton
-    private lateinit var categoriesButton: ImageButton
-    private lateinit var addExpenseButton: ImageButton
-    private lateinit var dashboardButton: ImageButton
-
-
-    private lateinit var balanceAmount: TextView
-    private lateinit var incomeAmount: TextView
-    private lateinit var expenseAmount: TextView
-    private lateinit var categoryFood: TextView
-    private lateinit var categoryTransport: TextView
-    private lateinit var categoryHousing: TextView
-    private lateinit var categoryLeisure: TextView
-
-    // --- Database reference ---
+    private lateinit var barChart: BarChart
     private lateinit var db: AppDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home)
 
-        // Initialize database
+        barChart = findViewById(R.id.barChart)
         db = AppDatabase.getDatabase(this)
 
-        // Initialize buttons
-        historyButton = findViewById(R.id.button_history)
-        categoriesButton = findViewById(R.id.button_categories)
-        addExpenseButton = findViewById(R.id.button_add_expense)
-        dashboardButton = findViewById(R.id.button_dashboard)
-
-        // Initialize text views
-        balanceAmount = findViewById(R.id.text_balance_amount)
-        incomeAmount = findViewById(R.id.text_balance_label)
-        expenseAmount = findViewById(R.id.text_balance_amount)
-        categoryFood = findViewById(R.id.text1)
-        categoryTransport = findViewById(R.id.text2)
-        categoryHousing = findViewById(R.id.text3)
-        categoryLeisure = findViewById(R.id.text4)
-
-        //Load saved expense data
-        loadExpenseData()
-
-        // --- Button click listeners ---
-        historyButton.setOnClickListener {
-            Toast.makeText(this, "Achievements clicked", Toast.LENGTH_SHORT).show()
-            startActivity(Intent(this, AchievementsActivity::class.java))
-        }
-
-        categoriesButton.setOnClickListener {
-            startActivity(Intent(this, CategoriesActivity::class.java))
-        }
-
-        addExpenseButton.setOnClickListener {
-            startActivity(Intent(this, RegisterExpenseActivity::class.java))
-        }
-
-        dashboardButton.setOnClickListener {
-            startActivity(Intent(this, BudgetActivity::class.java))
-        }
+        setupChart()
     }
 
-
-    private fun loadExpenseData() {
+    private fun setupChart() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val expenses = db.expenseDao().getAll()
+                val categories = db.categoryDao().getAll()
 
-                // Separate income and expenses
-                val totalIncome = expenses.filter { it.type == "Income" }.sumOf { it.value }
-                val totalExpenses = expenses.filter { it.type == "Expense" }.sumOf { it.value }
-                val balance = totalIncome - totalExpenses
-
-                // Group by category for the bottom list
-                val totalsByCategory = expenses
-                    .filter { it.type == "Expense" }
-                    .groupBy { it.category }
-                    .mapValues { entry -> entry.value.sumOf { it.value } }
-
-                withContext(Dispatchers.Main) {
-                    //  Update the top card
-                    balanceAmount.text = "R %.2f".format(balance)
-
-
-                    categoryFood.text =
-                        "Food: -R %.2f".format(totalsByCategory["Food"] ?: 0.0)
-                    categoryTransport.text =
-                        "Transport: -R %.2f".format(totalsByCategory["Transport"] ?: 0.0)
-                    categoryHousing.text =
-                        "Housing: -R %.2f".format(totalsByCategory["Housing"] ?: 0.0)
-                    categoryLeisure.text =
-                        "Leisure: -R %.2f".format(totalsByCategory["Leisure"] ?: 0.0)
+                // Map category names to total expenses
+                val totalsByCategory = categories.associate { cat ->
+                    val total = expenses
+                        .filter { it.category == cat.name && it.type == "Expense" }
+                        .sumOf { it.value }
+                    cat.name to total
                 }
 
+                // Get min and max budgets
+                val minGoal = categories.minOfOrNull { it.budget } ?: 0.0
+                val maxGoal = categories.maxOfOrNull { it.budget } ?: 0.0
+
+                // Build BarEntries
+                val entries = totalsByCategory.entries.mapIndexed { index, entry ->
+                    BarEntry(index.toFloat(), entry.value.toFloat())
+                }
+
+                val dataSet = BarDataSet(entries, "Expenses")
+                dataSet.colors = categories.map { it.color }
+                dataSet.valueTextColor = Color.BLACK
+                dataSet.valueTextSize = 12f
+
+                val barData = BarData(dataSet)
+                barData.barWidth = 0.6f
+
+                withContext(Dispatchers.Main) {
+                    barChart.data = barData
+
+                    // X-axis labels
+                    val xAxis = barChart.xAxis
+                    xAxis.valueFormatter = com.github.mikephil.charting.formatter.IndexAxisValueFormatter(
+                        totalsByCategory.keys.toList()
+                    )
+                    xAxis.granularity = 1f
+                    xAxis.setDrawGridLines(false)
+                    xAxis.position = com.github.mikephil.charting.components.XAxis.XAxisPosition.BOTTOM
+                    xAxis.textSize = 12f
+
+                    // Y-axis
+                    val leftAxis = barChart.axisLeft
+                    leftAxis.axisMinimum = 0f
+
+                    // Add limit lines for min and max goals
+                    if (minGoal > 0) {
+                        val minLine = LimitLine(minGoal.toFloat(), "Min Goal")
+                        minLine.lineColor = Color.GREEN
+                        minLine.lineWidth = 2f
+                        leftAxis.addLimitLine(minLine)
+                    }
+                    if (maxGoal > 0) {
+                        val maxLine = LimitLine(maxGoal.toFloat(), "Max Goal")
+                        maxLine.lineColor = Color.RED
+                        maxLine.lineWidth = 2f
+                        leftAxis.addLimitLine(maxLine)
+                    }
+
+                    barChart.axisRight.isEnabled = false
+                    barChart.description = Description().apply { text = "" }
+                    barChart.legend.isEnabled = true
+                    barChart.invalidate()
+                }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(
-                        this@HomeActivity,
-                        "Error loading data: ${e.message}",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    Toast.makeText(this@HomeActivity, "Error loading chart: ${e.message}", Toast.LENGTH_LONG).show()
                 }
             }
         }

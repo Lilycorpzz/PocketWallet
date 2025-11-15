@@ -64,5 +64,6 @@
         <item>Income</item>
         <item>Expense</item>
     </string-array>
+    <string name="select_category_prompt">Select Category</string>
 
 </resources>

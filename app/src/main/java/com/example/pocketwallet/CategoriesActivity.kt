@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.pocketwallet.data.AppDatabase
 import com.example.pocketwallet.data.CategoryEntity
 import kotlinx.coroutines.launch
+private lateinit var spinnerCategory: Spinner
 
 class CategoriesActivity : AppCompatActivity() {
 
@@ -29,6 +30,15 @@ class CategoriesActivity : AppCompatActivity() {
     private lateinit var slotImages: List<ImageView>
     private lateinit var slotTexts: List<TextView>
     private var currentSlotIndex = 0 // track which slot to update next
+
+    // Predefined categories for spinner
+    private val predefinedCategories = listOf(
+        "Select Category", "Food", "Transport", "Housing", "Leisure",
+        "Healthcare", "Education", "Shopping", "Utilities", "Entertainment",
+        "Travel", "Personal Care", "Savings", "Investment", "Others"
+    )
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,6 +83,17 @@ class CategoriesActivity : AppCompatActivity() {
         addButton.setOnClickListener { saveCategory() }
     }
 
+    private fun setupSpinner() {
+        val adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_item,
+            predefinedCategories
+        )
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerCategory.adapter = adapter
+        spinnerCategory.setSelection(0) // default to "Select Category"
+    }
+
     private fun setupColorSelection() {
         colorCards.forEach { card ->
             card.setOnClickListener {
@@ -87,9 +108,15 @@ class CategoriesActivity : AppCompatActivity() {
         val name = inputName.text.toString().trim()
         val description = inputDescription.text.toString().trim()
         val quoteText = inputQuote.text.toString().trim()
+        val selectedSpinnerCategory = spinnerCategory.selectedItem.toString()
 
         if (name.isEmpty() || description.isEmpty() || quoteText.isEmpty()) {
             showToast("Please fill all fields.")
+            return
+        }
+
+        if (selectedSpinnerCategory == "Select Category") {
+            showToast("Please select a category from the list.")
             return
         }
 
@@ -123,6 +150,7 @@ class CategoriesActivity : AppCompatActivity() {
         inputName.text.clear()
         inputDescription.text.clear()
         inputQuote.text.clear()
+        spinnerCategory.setSelection(0)
         colorCards.forEach { it.cardElevation = 0f }
         selectedColor = null
     }
