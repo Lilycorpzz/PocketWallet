@@ -49,6 +49,8 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var categoryHousing: TextView
     private lateinit var categoryLeisure: TextView
     private lateinit var budgetWarning: TextView
+    private lateinit var recentEntry: TextView
+
 
     // --- Database & prefs ---
     private lateinit var db: AppDatabase
@@ -80,6 +82,7 @@ class HomeActivity : AppCompatActivity() {
         categoryHousing = findViewById(R.id.text3)
         categoryLeisure = findViewById(R.id.text4)
         budgetWarning = findViewById(R.id.textView2) // this is the warning TextView in your layout
+        recentEntry = findViewById(R.id.textRecentEntry)
 
         createNotificationChannel()
         loadExpenseData()
@@ -211,6 +214,9 @@ class HomeActivity : AppCompatActivity() {
                     .groupBy { it.category }
                     .mapValues { entry -> entry.value.sumOf { it.value } }
 
+                // Get the most recent entry
+                val lastEntry = expenses.maxByOrNull { it.id }
+
                 withContext(Dispatchers.Main) {
                     // Update UI
                     balanceAmount.text = "R %.2f".format(balance)
@@ -219,7 +225,12 @@ class HomeActivity : AppCompatActivity() {
                     categoryTransport.text = "Transport: -R %.2f".format(totalsByCategory["Transport"] ?: 0.0)
                     categoryHousing.text = "Housing: -R %.2f".format(totalsByCategory["Housing"] ?: 0.0)
                     categoryLeisure.text = "Leisure: -R %.2f".format(totalsByCategory["Leisure"] ?: 0.0)
-
+                    // Show recent entry
+                    recentEntry.text = if (lastEntry != null) {
+                        "${lastEntry.type}: ${lastEntry.name} — R %.2f".format(lastEntry.value)
+                    } else {
+                        "Recent Entry: None"
+                    }
                     // IMPORTANT: check budgets against TOTAL SPENT, not balance
                     checkBudgetLimits(totalExpenses)
                 }

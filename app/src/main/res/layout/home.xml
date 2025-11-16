@@ -50,11 +50,20 @@
                 android:id="@+id/text_balance_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="2dp"
                 android:text="R 1,200.00"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textRecentEntry"
+                android:layout_width="192dp"
+                android:layout_height="wrap_content"
+                android:padding="1dp"
+                android:text="Recent Entry: None"
+                android:textSize="10sp" />
+
 
         </LinearLayout>
 
