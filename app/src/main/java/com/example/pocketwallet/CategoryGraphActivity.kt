@@ -2,6 +2,7 @@ package com.example.pocketwallet
 
 import android.graphics.Color
 import android.os.Bundle
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.github.mikephil.charting.charts.BarChart
@@ -15,15 +16,20 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 class CategoryGraphActivity : AppCompatActivity() {
 
     private lateinit var barChart: BarChart
+    private lateinit var backButton: ImageButton
     private val categoryNames = ArrayList<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.category_graph) // change to your correct layout
-
+        backButton = findViewById(R.id.backButton)
         barChart = findViewById(R.id.categoryBarChart)
 
         loadCategoriesFromFirebase()
+        backButton.setOnClickListener {
+            // simply finish the activity to go back to previous screen
+            finish()
+        }
     }
 
     // 🔥 STEP 1 — Load categories first
@@ -107,5 +113,7 @@ class CategoryGraphActivity : AppCompatActivity() {
 
         barChart.axisRight.isEnabled = false
         barChart.invalidate()
+
+
     }
 }
