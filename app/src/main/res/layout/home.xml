@@ -23,6 +23,13 @@
             android:layout_marginBottom="12dp"
             android:contentDescription="App Logo"
             android:src="@drawable/icon_camera" />
+        <Switch
+            android:id="@+id/themeSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dark Mode"
+            android:checked="false"
+            android:layout_margin="12dp" />
 
         <TextView
             android:id="@+id/textView2"

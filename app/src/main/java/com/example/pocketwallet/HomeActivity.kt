@@ -21,6 +21,7 @@ import kotlinx.coroutines.withContext
 import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.widget.Switch
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.github.mikephil.charting.charts.BarChart
@@ -50,6 +51,9 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var categoryLeisure: TextView
     private lateinit var budgetWarning: TextView
 
+    private lateinit var themeSwitch: Switch
+
+
     // --- Database & prefs ---
     private lateinit var db: AppDatabase
     private lateinit var prefs: SharedPreferences
@@ -61,8 +65,20 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ThemeManager.applySavedTheme(this)
         setContentView(R.layout.home)
+        themeSwitch = findViewById(R.id.themeSwitch)
 
+        val prefs2 = getSharedPreferences("ThemePrefs", MODE_PRIVATE)
+        val isDark = prefs2.getBoolean("dark_mode", false)
+
+        // Set initial switch state
+        themeSwitch.isChecked = isDark
+
+        themeSwitch.setOnCheckedChangeListener { _, checked ->
+            ThemeManager.toggleTheme(this, checked)
+            recreate() // refresh UI
+        }
         db = AppDatabase.getDatabase(this)
         prefs = getSharedPreferences("BudgetPrefs", MODE_PRIVATE)
         barChart = findViewById(R.id.categoryBarChart)

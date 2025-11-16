@@ -4,6 +4,8 @@
 
 
     <style name="Theme.PocketWallet" parent="Theme.Material3.DayNight.NoActionBar">
-
+        <item name="colorPrimary">@color/main_blue</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="android:colorBackground">@color/light_backgroud</item>
     </style>
 </resources>
