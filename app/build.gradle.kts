@@ -2,8 +2,6 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("org.jetbrains.kotlin.kapt")
-    alias(libs.plugins.google.gms.google.services)
-    alias(libs.plugins.google.firebase.crashlytics)
 
 }
 
@@ -51,7 +49,7 @@ dependencies {
     implementation("com.google.firebase:firebase-database-ktx:20.3.0")
 
     // Crashlytics
-    implementation(libs.firebase.crashlytics)
+
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
     // Room
