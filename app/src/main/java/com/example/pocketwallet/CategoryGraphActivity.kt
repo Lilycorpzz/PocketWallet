@@ -22,14 +22,14 @@ class CategoryGraphActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.category_graph) // change to your correct layout
-        backButton = findViewById(R.id.backButton)
+        //backButton = findViewById(R.id.backButton)
         barChart = findViewById(R.id.categoryBarChart)
 
         loadCategoriesFromFirebase()
-        backButton.setOnClickListener {
+       /* backButton.setOnClickListener {
             // simply finish the activity to go back to previous screen
             finish()
-        }
+        }*/
     }
 
     // 🔥 STEP 1 — Load categories first
