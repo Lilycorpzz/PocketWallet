@@ -24,6 +24,7 @@ class CategoriesActivity : AppCompatActivity() {
 
     // Database
     private val db by lazy { AppDatabase.getDatabase(this) }
+    private val categoriesRef = FirebaseManager.db.child("categories")
 
     // Slot references (4 available)
     private lateinit var slotImages: List<ImageView>
@@ -88,6 +89,7 @@ class CategoriesActivity : AppCompatActivity() {
         val description = inputDescription.text.toString().trim()
         val quoteText = inputQuote.text.toString().trim()
 
+        // --- Validations ---
         if (name.isEmpty() || description.isEmpty() || quoteText.isEmpty()) {
             showToast("Please fill all fields.")
             return
@@ -104,6 +106,7 @@ class CategoriesActivity : AppCompatActivity() {
             return
         }
 
+        // --- Create CategoryEntity ---
         val category = CategoryEntity(
             name = name,
             description = description,
@@ -111,21 +114,34 @@ class CategoriesActivity : AppCompatActivity() {
             color = selectedColor!!
         )
 
-        // Save to DB
+        // --- Save to local Room DB ---
         lifecycleScope.launch {
             db.categoryDao().insert(category)
         }
 
-        // Update UI slot
+        // --- Update UI slot ---
         updateSlotDisplay(category)
         showToast("Category '$name' saved!")
 
+        // --- Clear inputs ---
         inputName.text.clear()
         inputDescription.text.clear()
         inputQuote.text.clear()
         colorCards.forEach { it.cardElevation = 0f }
         selectedColor = null
+
+        // --- Upload to Firebase (push with unique key) ---
+        val categoryMap = mapOf(
+            "name" to name,
+            "description" to description,
+            "budget" to budget,
+            "color" to category.color
+        )
+        FirebaseManager.db.child("categories").push().setValue(categoryMap)
+            .addOnSuccessListener { showToast("Uploaded to Firebase!") }
+            .addOnFailureListener { showToast("Failed to upload to Firebase") }
     }
+
 
     private fun updateSlotDisplay(category: CategoryEntity) {
         val image = slotImages[currentSlotIndex]

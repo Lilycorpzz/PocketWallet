@@ -161,6 +161,13 @@
                     android:background="@drawable/card_rounded_background"
                     android:src="@drawable/icon_history"
                     android:contentDescription="View history" />
+                <ImageButton
+                    android:id="@+id/button_graph"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:background="@drawable/card_rounded_background"
+                    android:src="@drawable/icon_categories"
+                    android:contentDescription="View history" />
 
                 <TextView
                     android:layout_width="wrap_content"

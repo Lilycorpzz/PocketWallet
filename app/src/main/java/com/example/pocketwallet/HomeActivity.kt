@@ -29,6 +29,7 @@ class HomeActivity : AppCompatActivity() {
 
     // --- Buttons ---
     private lateinit var historyButton: ImageButton
+    private lateinit var graphButton: ImageButton
     private lateinit var categoriesButton: ImageButton
     private lateinit var addExpenseButton: ImageButton
     private lateinit var dashboardButton: ImageButton
@@ -62,7 +63,7 @@ class HomeActivity : AppCompatActivity() {
         categoriesButton = findViewById(R.id.button_categories)
         addExpenseButton = findViewById(R.id.button_add_expense)
         dashboardButton = findViewById(R.id.button_dashboard)
-
+        graphButton = findViewById(R.id.button_graph)
         // Views (fixing incorrect bindings from before)
         balanceAmount = findViewById(R.id.text_balance_amount)
         categoryFood = findViewById(R.id.text1)
@@ -89,6 +90,10 @@ class HomeActivity : AppCompatActivity() {
         dashboardButton.setOnClickListener {
             startActivity(Intent(this, BudgetActivity::class.java))
         }
+        graphButton.setOnClickListener {
+            startActivity(Intent(this, CategoryGraphActivity::class.java))
+        }
+
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
