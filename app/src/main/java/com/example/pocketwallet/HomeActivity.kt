@@ -20,9 +20,16 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.Color
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-
+import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.components.Description
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 
 
 class HomeActivity : AppCompatActivity() {
@@ -30,6 +37,7 @@ class HomeActivity : AppCompatActivity() {
     // --- Buttons ---
     private lateinit var historyButton: ImageButton
     private lateinit var graphButton: ImageButton
+    private lateinit var barChart: BarChart
     private lateinit var categoriesButton: ImageButton
     private lateinit var addExpenseButton: ImageButton
     private lateinit var dashboardButton: ImageButton
@@ -45,7 +53,7 @@ class HomeActivity : AppCompatActivity() {
     // --- Database & prefs ---
     private lateinit var db: AppDatabase
     private lateinit var prefs: SharedPreferences
-
+    private val categoryNames = ArrayList<String>()
     companion object {
         private const val TAG = "HomeActivity"
         private const val CHANNEL_ID = "budget_channel"
@@ -57,13 +65,14 @@ class HomeActivity : AppCompatActivity() {
 
         db = AppDatabase.getDatabase(this)
         prefs = getSharedPreferences("BudgetPrefs", MODE_PRIVATE)
-
+        barChart = findViewById(R.id.categoryBarChart)
+        loadCategoriesFromFirebase()
         // Buttons
         historyButton = findViewById(R.id.button_history)
         categoriesButton = findViewById(R.id.button_categories)
         addExpenseButton = findViewById(R.id.button_add_expense)
         dashboardButton = findViewById(R.id.button_dashboard)
-        graphButton = findViewById(R.id.button_graph)
+        //graphButton = findViewById(R.id.button_graph)
         // Views (fixing incorrect bindings from before)
         balanceAmount = findViewById(R.id.text_balance_amount)
         categoryFood = findViewById(R.id.text1)
@@ -90,9 +99,10 @@ class HomeActivity : AppCompatActivity() {
         dashboardButton.setOnClickListener {
             startActivity(Intent(this, BudgetActivity::class.java))
         }
-        graphButton.setOnClickListener {
-            startActivity(Intent(this, CategoryGraphActivity::class.java))
-        }
+        //graphButton.setOnClickListener {
+        //    startActivity(Intent(this, CategoryGraphActivity::class.java))
+        //}
+
 
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -106,7 +116,85 @@ class HomeActivity : AppCompatActivity() {
         }
 
     }
+    private fun loadCategoriesFromFirebase() {
+        FirebaseManager.db.child("categories").get()
+            .addOnSuccessListener { snapshot ->
 
+                val categoryEntries = ArrayList<BarEntry>()
+                categoryNames.clear()
+                var index = 0f
+
+                if (!snapshot.exists()) {
+                    Toast.makeText(this, "No categories found in Firebase", Toast.LENGTH_SHORT).show()
+                } else {
+                    snapshot.children.forEach { child ->
+                        val name = child.child("name").getValue(String::class.java) ?: "Unknown"
+                        val budget = child.child("budget").getValue(Double::class.java) ?: 0.0
+
+                        categoryEntries.add(BarEntry(index, budget.toFloat()))
+                        categoryNames.add(name)
+                        index += 1f
+                    }
+                }
+
+                loadGoalsFromFirebase(categoryEntries)
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Failed to load categories", Toast.LENGTH_SHORT).show()
+            }
+    }
+    private fun loadGoalsFromFirebase(categoryEntries: ArrayList<BarEntry>) {
+        FirebaseManager.db.child("goals").get()
+            .addOnSuccessListener { snap ->
+                val min = snap.child("minGoal").getValue(Double::class.java) ?: 0.0
+                val max = snap.child("maxGoal").getValue(Double::class.java) ?: 0.0
+
+                val goalEntries = ArrayList<BarEntry>()
+                goalEntries.add(BarEntry(0f, min.toFloat()))
+                goalEntries.add(BarEntry(1f, max.toFloat()))
+
+                displayGraph(categoryEntries, goalEntries)
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Failed to load goals", Toast.LENGTH_SHORT).show()
+                displayGraph(categoryEntries, ArrayList()) // still show categories
+            }
+    }
+    private fun displayGraph(
+        categoryEntries: ArrayList<BarEntry>,
+        goalEntries: ArrayList<BarEntry>
+    ) {
+        // Category bars
+        val categorySet = BarDataSet(categoryEntries, "Category Budgets")
+        categorySet.color = Color.parseColor("#4CAF50") // green
+
+        // Goal bars
+        val goalSet = BarDataSet(goalEntries, "Min/Max Goals")
+        goalSet.color = Color.parseColor("#F44336") // red
+
+        val data = BarData(categorySet, goalSet)
+        data.barWidth = 0.35f
+
+        barChart.data = data
+        barChart.setFitBars(true)
+
+        val desc = Description()
+        desc.text = "Category Spending vs Goals"
+        barChart.description = desc
+
+        // X-axis labels (category names)
+        val xAxis = barChart.xAxis
+        xAxis.valueFormatter = IndexAxisValueFormatter(categoryNames)
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.setDrawGridLines(false)
+        xAxis.granularity = 1f
+        xAxis.labelRotationAngle = -45f
+
+        barChart.axisRight.isEnabled = false
+        barChart.invalidate()
+
+
+    }
     private fun loadExpenseData() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {

@@ -13,16 +13,17 @@
         android:orientation="vertical">
 
         <!-- App Logo -->
+
+        <!-- Balance Card -->
         <ImageView
             android:id="@+id/app_logo"
             android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_height="128dp"
             android:layout_gravity="center"
+            android:layout_marginBottom="12dp"
             android:contentDescription="App Logo"
-            android:src="@drawable/icon_camera"
-            android:layout_marginBottom="12dp" />
+            android:src="@drawable/icon_camera" />
 
-        <!-- Balance Card -->
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
@@ -42,100 +43,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Current Balance"
-                android:textSize="14sp"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/text_balance_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:text="R 1,200.00"
-                android:textSize="26sp"
-                android:textStyle="bold"
                 android:textColor="@color/black"
-                android:layout_marginTop="4dp" />
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
-            <!-- Income and Expense Row -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="12dp">
-
-                <!-- Income -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:src="@drawable/icon_revenue"
-                        android:contentDescription="Income Icon" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginStart="8dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Income"
-                            android:textColor="@color/black"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="+R 3,500.00"
-                            android:textColor="@color/light_green"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <!-- Expense -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:src="@drawable/icon_expense"
-                        android:contentDescription="Expense Icon" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginStart="8dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Expenses"
-                            android:textColor="@color/black"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="-R 2,300.00"
-                            android:textColor="@color/light_red"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
         </LinearLayout>
 
         <!-- Navigation Buttons Row -->
@@ -161,13 +81,7 @@
                     android:background="@drawable/card_rounded_background"
                     android:src="@drawable/icon_history"
                     android:contentDescription="View history" />
-                <ImageButton
-                    android:id="@+id/button_graph"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:background="@drawable/card_rounded_background"
-                    android:src="@drawable/icon_categories"
-                    android:contentDescription="View history" />
+
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -267,7 +181,11 @@
             android:textStyle="bold"
             android:textColor="@color/black"
             android:layout_marginBottom="8dp" />
-
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/categoryBarChart"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_marginTop="20dp"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="180dp"
@@ -276,11 +194,7 @@
             android:orientation="horizontal"
             android:gravity="center">
 
-            <ImageView
-                android:layout_width="130dp"
-                android:layout_height="130dp"
-                android:src="@drawable/color_leisure"
-                android:contentDescription="Category Chart" />
+
 
             <LinearLayout
                 android:layout_width="wrap_content"
