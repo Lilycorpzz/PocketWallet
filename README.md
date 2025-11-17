@@ -1,116 +1,122 @@
 # PocketWallet
 
 ## Video
-
-[Video](https://drive.google.com/file/d/1b4r79BbptdVatn2IWHuIGSmGVbDaPPQL/view?usp=sharing)
+[Watch the demo](https://drive.google.com/file/d/1b4r79BbptdVatn2IWHuIGSmGVbDaPPQL/view?usp=sharing)
 
 ## APK
+The APK is in the `app/` folder.
 
-Apk is in the app folder.
+---
 
-## App Overview
+## Overview
+PocketWallet helps you plan and track day-to-day spending.
 
-PocketWallet enables users to:
+- Secure **login** (username & password)  
+- Create and manage **categories**  
+- Register **expenses** (with optional receipt photo)  
+- Set **monthly budget goals** (min & max)  
+- See **spend per category** over a user-selectable period  
+- Automatically **warn** when you **over-spend** your max goal  
+- **Most recent expense** displayed on the Home page for quick context  
+- Works **offline** with Room/SQLite and **syncs** via Firebase
 
-Log in securely with a username and password
+---
 
-Add and manage spending categories
+## What’s New (This Build)
 
-Register daily expenses with optional photo attachments
+1. **Monthly Budget Goals + Over-Budget Alerts**  
+   - Set **Min** and **Max** in the **Budget** screen.  
+   - When you add expenses, the app totals the month and **warns you if you’ve gone over** your Max goal.  
+   - The Budget screen includes a **bar chart** that draws **Min/Max** as goal lines.
 
-Set minimum and maximum monthly budget goals
+2. **Category Spinner + Category Bar Graph on Home**  
+   - A **Category spinner** was added to the Categories/Expense flow.  
+   - On **Home**, a **bar graph** shows **amount spent per category** over a **user-selectable period** (Start/End date pickers).  
+   - As you add categories/expenses, the chart updates automatically.  
+   - The **most recent expense** is surfaced on the Home page for instant reference.
 
-View total spending by category over a chosen period
+> The graphs are display-only: users add data via the forms; charts update themselves.
 
-Track achievements based on budget performance
+---
 
-All data is stored locally using RoomDB (or SQLite), ensuring offline access and data persistence.
+## Screens & Features
 
-## Main Features
+### Login
+- Username + password validation; routes to Dashboard on success.
 
-- Login Page
+### Home (Dashboard)
+- Current **balance** (Income − Expenses).  
+- **Most recent expense** summary at the top.  
+- **Expenses by Category** bar chart:
+  - Period controls (Start/End date pickers).  
+  - Bars colored by category.  
+  - **Min/Max** budget goal lines pulled from Budget settings.  
+- **Over-spending warning** displayed if monthly total > Max goal.  
+- Quick links: **Register Expense**, **Categories**, **Achievements**, **Budget**.
 
-Users can log in using a username and password.
+### Register Expense
+- Fields: Name, Description, **Category (spinner)**, Amount (ZAR), **Date**, **Start/End Time**, optional **Photo**.  
+- Saves to Room and syncs to Firebase.  
+- Immediately reflected in the Home chart, the “most recent expense” banner, and over-budget check.
 
-If either field is left empty, an error message prompts the user to complete both fields.
+### Categories
+- Create/edit category **name**, **description**, **budget**, and **color**.  
+- Category colors are reused for chart bars.  
+- Category spinner selection standardizes entries.
 
-Upon successful login, users are taken to the Home Dashboard.
+### Budget Goals
+- Set **Minimum** and **Maximum** monthly goals.  
+- Built-in **bar chart** visualizes these as **limit lines**.  
+- Automatic “**over-budget**” alert when monthly total exceeds Max goal.
 
-- Home Page (Dashboard)
+### Achievements
+- Simple progress indicators for staying within budget.
 
-Displays the user’s current budget overview, including total spending and remaining balance.
+---
 
-Navigation buttons allow quick access to:
+## Data & Persistence
 
-Register Expense
+- **Local (offline-first):** RoomDB / SQLite  
+  Stores categories, expenses, and goals for offline use.
 
-Categories
+- **Cloud Sync: Firebase Realtime Database**  
+  - Data replicated under:
+    - `/users/{uid}/categories/...`
+    - `/users/{uid}/expenses/...`
+    - `/users/{uid}/goals/...`
+  - On startup, Room hydrates local data from Firebase if available; new/updated items are pushed back.
 
-Achievements
+---
 
-- Register Expense Page
+## Tech Stack
 
-Allows users to:
+- **Language:** Kotlin  
+- **Android:** Jetpack, ConstraintLayout, Material Components  
+- **Charts:** MPAndroidChart (bar charts + limit lines)  
+- **Local DB:** Room / SQLite  
+- **Cloud:** Firebase Realtime Database  
+- **Images:** optional receipt photos
 
-Add a new expense with a name, description, category, and amount (Rands).
+---
 
-Attach an optional photo for receipts or proof of purchase.
+## Run the Project
 
-Includes input validation and feedback messages.
+1. Open in **Android Studio**.  
+2. Add Firebase config:  
+   - Place `google-services.json` in `app/`.  
+   - Ensure the **Google Services** Gradle plugin is applied.  
+3. Sync Gradle and build.  
+4. Run on device/emulator.  
+5. Log in (any username/password for demo).  
+6. Create categories, set **Min/Max** in **Budget**, then add expenses — Home will show your **most recent expense**, the **bar chart**, and warn if you go **over budget**.
 
-Data saved locally for persistence.
-
-- Category Page
-
-Users can create, edit, and delete spending categories.
-
-Each expense must belong to a category.
-
-Displays total spending per category for a selected date range.
-
-- Achievement Page
-
-Shows progress toward monthly spending goals.
-
-Provides feedback or achievements for staying within budget limits.
-
-Encourages responsible financial habits.
-
-- Data Persistence
-
-All user data is stored locally using:
-
-RoomDB / SQLite
-
-Supports offline usage
-
-Automatically updates totals and category summaries
-
-## Technologies Used
-
-Language: Kotlin
-
-Framework: Android SDK (Jetpack Components)
-
-Database: RoomDB / SQLite
-
-UI Design: XML Layouts & Material Components
-
-## How to Run
-
-1. Open the project in **Android Studio**.
-2. Sync Gradle and make sure all dependencies install successfully.
-3. Run the app on an emulator or physical Android device.
-4. Log in using any username and password.
-5. Explore the Home and Expense Entry pages.
+---
 
 ## Currency
+All amounts are shown in **South African Rands (ZAR)**.
 
-All monetary values in this app are represented in **South African Rands (ZAR)**.
+---
 
 ## Developers
-
-**Name:** [Tapuwa, Mpho, Sihle]  
-**Institution:** [Vega School]  
-**Module:** [OPSC7311]  
-**Year:** 2025  
+**Tapuwa, Mpho, Sihle**  
+**Vega School** — **OPSC7311** (2025)
