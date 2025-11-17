@@ -1,7 +1,7 @@
 # PocketWallet
 
 ## Video
-[Watch the demo](https://drive.google.com/file/d/1b4r79BbptdVatn2IWHuIGSmGVbDaPPQL/view?usp=sharing)
+[Watch the demo](https://drive.google.com/file/d/1kduCbd6kqFKHUEWLwb0PPgyeKndqfaYM/view?usp=sharing)
 
 ## APK
 The APK is in the `app/` folder.
